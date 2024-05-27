@@ -64,7 +64,7 @@ router.post("/register", async (req, res) => {
 router.get("/result", async (req, res) => {
     try {
         const request = pool.request();
-        const result = await request.query('Select ProductName,Image,Description,Price from productmaster');
+        const result = await request.query('Select ProductName,Image,Description,Price,Category from productmaster');
         res.status(200).json({ result: result.recordsets });
     } catch (err) {
         console.error("Registration Error:", err);

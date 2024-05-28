@@ -60,7 +60,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-
+// Product 
 router.get("/result", async (req, res) => {
     try {
         const request = pool.request();
@@ -72,6 +72,7 @@ router.get("/result", async (req, res) => {
     }
 });
 
+// Category
 router.get("/category", async (req, res) => {
     try {
         const request = pool.request();

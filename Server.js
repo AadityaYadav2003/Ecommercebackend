@@ -13,4 +13,4 @@ app.use('/user', userRoute)
 app.get('/', function (req, res) {
     res.send('Frist Api');
 });
-app.listen(4545, () => console.log("Server started"))
+app.listen(4545, () => console.log("Server Started"))

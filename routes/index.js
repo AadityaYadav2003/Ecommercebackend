@@ -85,10 +85,26 @@ router.get("/category", async (req, res) => {
 });
 
 // profile 
-router.get("/profile", async (req, res) => {
+router.post("/profile", async (req, res) => {
+    const { email } = req.body;
     try {
         const request = pool.request();
-        const result = await request.query('Select * from usermaster');
+        const result = await request
+        .input('email', mssql.VarChar, email)
+        .query('Select Image,username,email,mobile from usermaster WHERE email = @email');
+        res.status(200).json({ result: result.recordsets });
+    } catch (err) {
+        console.error("Registration Error:", err);
+        res.status(500).json({ msg: "Registration Error" });
+    }
+});
+
+router.get("/profile", async (req, res) => {
+    
+    try {
+        const request = pool.request();
+        const result = await request
+        .query('Select * from usermaster');
         res.status(200).json({ result: result.recordsets });
     } catch (err) {
         console.error("Registration Error:", err);

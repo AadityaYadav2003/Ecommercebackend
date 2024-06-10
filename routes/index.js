@@ -90,8 +90,8 @@ router.post("/profile", async (req, res) => {
     try {
         const request = pool.request();
         const result = await request
-        .input('email', mssql.VarChar, email)
-        .query('Select Image,username,email,mobile from usermaster WHERE email = @email');
+            .input('email', mssql.VarChar, email)
+            .query('Select Image,username,email,mobile from usermaster WHERE email = @email');
         res.status(200).json({ result: result.recordsets });
     } catch (err) {
         console.error("Registration Error:", err);
@@ -100,11 +100,11 @@ router.post("/profile", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-    
+
     try {
         const request = pool.request();
         const result = await request
-        .query('Select * from usermaster');
+            .query('Select * from usermaster');
         res.status(200).json({ result: result.recordsets });
     } catch (err) {
         console.error("Registration Error:", err);

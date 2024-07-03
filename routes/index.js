@@ -1,6 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const mssql = require("mssql");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const app = express()
+
+app.use(bodyParser.json)
+app.use(cors())
 
 // config for your database
 const config = {

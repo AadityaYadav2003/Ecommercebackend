@@ -52,13 +52,16 @@ router.post("/login", async (req, res) => {
 
 // Register
 router.post("/register", async (req, res) => {
-    const { email, phone, username, password } = req.body;
+    const { email, mobile, username, dob, password } = req.body;
     try {
         const request = pool.request();
         const result = await request
             .input('email', mssql.VarChar, email)
+            .input('mobile', mssql.VarChar, mobile)
+            .input('username', mssql.VarChar, username)
+            .input('dob', mssql.Date, dob) // Assuming dateOfBirth is in YYYY-MM-DD format
             .input('password', mssql.VarChar, password)
-            .query('INSERT INTO logintable (email, password) VALUES (@email,@password)');
+            .query('INSERT INTO usermaster (email, mobile, username, dob, password) VALUES (@email, @mobile, @username, @dob, @password)');
         res.status(200).json({ msg: 'User registered successfully' });
     } catch (err) {
         console.error("Registration Error:", err);
@@ -106,6 +109,19 @@ router.post("/profile", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
+
+    try {
+        const request = pool.request();
+        const result = await request
+            .query('Select * from usermaster');
+        res.status(200).json({ result: result.recordsets });
+    } catch (err) {
+        console.error("Registration Error:", err);
+        res.status(500).json({ msg: "Registration Error" });
+    }
+});
+
+router.get("/db", async (req, res) => {
 
     try {
         const request = pool.request();

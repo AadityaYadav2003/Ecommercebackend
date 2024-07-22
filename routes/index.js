@@ -38,7 +38,7 @@ router.post("/login", async (req, res) => {
         const result = await request
             .input('email', mssql.VarChar, email)
             .input('password', mssql.VarChar, password)
-            .query('SELECT * FROM logintable WHERE email = @email AND password = @password');
+            .query('SELECT * FROM usermaster WHERE email = @email AND password = @password');
         if (result.recordset.length > 0) {
             res.status(200).json({ msg: "Login successful" });
         } else {

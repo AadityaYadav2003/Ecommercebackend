@@ -121,6 +121,7 @@ router.get("/profile", async (req, res) => {
     }
 });
 
+// Database request for testing 
 router.get("/db", async (req, res) => {
 
     try {

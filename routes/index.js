@@ -134,5 +134,42 @@ router.get("/db", async (req, res) => {
     }
 });
 
+router.post("/forgot", async (req, res) => {
+    const { email, oldPassword, newPassword } = req.body;
+
+    if (!email || !oldPassword || !newPassword) {
+        return res.status(400).json({ msg: "All fields are required" });
+    }
+
+    try {
+        const request = pool.request();
+        // First, verify the old password
+        const result = await request
+            .input('email', mssql.VarChar, email)
+            .input('oldPassword', mssql.VarChar, oldPassword)
+            .query('SELECT password FROM usermaster WHERE email = @email');
+
+        if (result.recordset.length === 0) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+
+        const currentPassword = result.recordset[0].password;
+
+        if (currentPassword !== oldPassword) {
+            return res.status(400).json({ msg: "Old password is incorrect" });
+        }
+
+        // Update the password
+        await request
+            .input('newPassword', mssql.VarChar, newPassword)
+            .query('UPDATE usermaster SET password = @newPassword WHERE email = @email');
+
+        res.status(200).json({ msg: 'Password updated successfully' });
+    } catch (err) {
+        console.error("Password Update Error:", err);
+        res.status(500).json({ msg: "An error occurred, please try again" });
+    }
+});
+
 
 module.exports = router;
